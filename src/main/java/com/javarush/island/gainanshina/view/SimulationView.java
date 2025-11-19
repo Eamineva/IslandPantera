@@ -12,13 +12,13 @@ public class SimulationView {
 
     public void start() {
         System.out.println("=== СИМУЛЯЦИЯ ОСТРОВА ===");
-        System.out.println("Запуск симуляции...");
+        System.out.println("Запуск симуляции.");
 
         simulationManager.startSimulation();
 
         // Добавляем обработчик завершения
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Завершение симуляции...");
+            System.out.println("Завершение симуляции.");
             simulationManager.stopSimulation();
         }));
     }

@@ -37,7 +37,6 @@ public abstract class Animal extends Entity implements Food {
         }
     }
 
-    // Добавьте сеттер для location
     public void setLocation(Location location) {
         this.location = location;
     }

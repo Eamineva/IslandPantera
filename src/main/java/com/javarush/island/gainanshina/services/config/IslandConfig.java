@@ -8,24 +8,56 @@ import com.javarush.island.gainanshina.entities.plants.Plant;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Класс конфигурации для управления параметрами симуляции острова.
+ * Содержит настраиваемые параметры: размеры острова, временные интервалы,
+ * характеристики животных, вероятности событий и условия остановки.
+ */
 public class IslandConfig {
-    // Размер острова
+    // === ОСНОВНЫЕ ПАРАМЕТРЫ СИМУЛЯЦИИ ===
+
+    /**
+     * Ширина острова в клетках.
+     */
     public static final int WIDTH = 100;
+    /**
+     * Высота острова в клетках.
+     */
     public static final int HEIGHT = 20;
 
-    // Временные параметры
+    /**
+     * Интервал между тактами симуляции в миллисекундах.
+     * Меньшее значение = более быстрая симуляция.
+     */
     public static final int SIMULATION_TICK_DELAY_MS = 1000;
+    /**
+     * Интервал между ростом растений в миллисекундах.
+     */
     public static final int PLANT_GROWTH_INTERVAL_MS = 3000;
+    /**
+     * Интервал вывода статистики в миллисекундах.
+     */
     public static final int STATISTICS_INTERVAL_MS = 2000;
 
-    // Максимальное количество растений на клетке
+    /**
+     * Максимальное количество растений на одной клетке.
+     */
     public static final int MAX_PLANTS_PER_LOCATION = 200;
 
-    // Вероятности поедания (хищник -> жертва)
+    /**
+     * Карта вероятностей поедания между хищниками и жертвами.
+     * Ключ: класс хищника, Значение: карта (класс жертвы → вероятность в процентах)
+     *
+     * <p>Пример: Wolf → (Rabbit → 60) означает, что волк съедает кролика
+     * с вероятностью 60% при встрече на одной клетке.</p>
+     */
     private static final Map<Class<? extends Animal>, Map<Class<?>, Integer>> EATING_PROBABILITIES =
             new HashMap<>();
 
-    // Характеристики животных
+    /**
+     * Карта характеристик для каждого вида животных.
+     * Ключ: класс животного, Значение: объект AnimalProperties с параметрами
+     */
     private static final Map<Class<? extends Animal>, AnimalProperties> ANIMAL_PROPERTIES =
             new HashMap<>();
 
@@ -33,7 +65,9 @@ public class IslandConfig {
         initializeEatingProbabilities();
         initializeAnimalProperties();
     }
-
+    /**
+     * Карта вероятностей поедания для всех видов животных.
+          */
     private static void initializeEatingProbabilities() {
         // Волк
         Map<Class<?>, Integer> wolfDiet = new HashMap<>();
@@ -104,7 +138,15 @@ public class IslandConfig {
             }
         }
     }
-
+    /**
+     * Инициализирует карту характеристик для всех видов животных.
+     * Заполняет ANIMAL_PROPERTIES параметрами каждого вида:
+     * - Вес животного
+     * - Максимальное количество на клетке
+     * - Скорость перемещения
+     * - Потребность в пище
+     * - Вероятность размножения
+     */
     private static void initializeAnimalProperties() {
         ANIMAL_PROPERTIES.put(Wolf.class, new AnimalProperties(50, 30, 3, 8, 0.5));
         ANIMAL_PROPERTIES.put(Boa.class, new AnimalProperties(15, 30, 1, 3, 0.5));
@@ -124,6 +166,9 @@ public class IslandConfig {
         ANIMAL_PROPERTIES.put(Caterpillar.class, new AnimalProperties(0.01, 1000, 0, 0, 0.5));
     }
 
+    /**
+     * Возвращает вероятность поедания для заданной пары хищник-жертва.
+     */
     public static int getEatingProbability(Class<? extends Animal> predator, Class<?> prey) {
         Map<Class<?>, Integer> diet = EATING_PROBABILITIES.get(predator);
         if (diet != null && diet.containsKey(prey)) {

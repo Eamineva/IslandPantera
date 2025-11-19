@@ -26,7 +26,7 @@ public abstract class Herbivore extends Animal {
             return;
         }
 
-        // Если это утка или мышь, может съесть гусеницу
+        // Если это утка, мышь, кабан, может съесть гусеницу
         if (this instanceof Duck || this instanceof Mouse || this instanceof Boar) {
             for (Animal animal : location.getAnimals()) {
                 if (animal instanceof Caterpillar && ThreadLocalRandom.current().nextInt(100) < 90) {
